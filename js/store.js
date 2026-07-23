@@ -1,4 +1,4 @@
-// All datalagring går genom den här modulen: Supabase när config finns i
+// All datalagring går genom den här modulen: Firestore när config finns i
 // index.html, annars localStorage (appen funkar, men utan sync mellan enheter).
 //
 // En logg-rad: { week, slot, done, date_completed, rpe, note, metrics, updated_at }
@@ -7,10 +7,10 @@ export function logKey(week, slot) {
   return `${week}:${slot}`;
 }
 
-function supabaseConfig() {
-  const c = globalThis.SUPABASE_CONFIG;
-  if (!c || !c.url || !c.anonKey) return null;
-  if (c.url.includes('PLACEHOLDER') || c.anonKey.includes('PLACEHOLDER')) return null;
+function firebaseConfig() {
+  const c = globalThis.FIREBASE_CONFIG;
+  if (!c || !c.apiKey || !c.projectId) return null;
+  if (Object.values(c).some((v) => String(v).includes('PLACEHOLDER'))) return null;
   return c;
 }
 
@@ -38,40 +38,34 @@ function createLocalBackend() {
   };
 }
 
-async function createSupabaseBackend(config) {
-  const { createClient } = await import('https://esm.sh/@supabase/supabase-js@2.45.4');
-  const client = createClient(config.url, config.anonKey, {
-    realtime: { params: { eventsPerSecond: 5 } }
-  });
+async function createFirestoreBackend(config) {
+  const { initializeApp } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js');
+  const { getFirestore, collection, doc, setDoc, getDocs, onSnapshot } =
+    await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
+  const db = getFirestore(initializeApp(config));
+  const logsRef = collection(db, 'session_log');
   return {
-    name: 'supabase',
+    name: 'firestore',
     async load() {
-      const { data, error } = await client.from('session_log').select('*');
-      if (error) throw error;
+      const snapshot = await getDocs(logsRef);
       const map = {};
-      for (const row of data) map[logKey(row.week, row.slot)] = row;
+      snapshot.forEach((d) => { map[d.id] = d.data(); });
       return map;
     },
     async upsert(log) {
-      const { error } = await client
-        .from('session_log')
-        .upsert(log, { onConflict: 'week,slot' });
-      if (error) throw error;
+      await setDoc(doc(logsRef, logKey(log.week, log.slot)), log);
     },
     subscribe(onRow) {
-      client
-        .channel('session_log-changes')
-        .on(
-          'postgres_changes',
-          { event: '*', schema: 'public', table: 'session_log' },
-          (payload) => payload.new && onRow(payload.new)
-        )
-        .subscribe();
+      onSnapshot(logsRef, (snapshot) => {
+        for (const change of snapshot.docChanges()) {
+          if (change.type !== 'removed') onRow(change.doc.data());
+        }
+      });
     }
   };
 }
 
 export async function createStore() {
-  const config = supabaseConfig();
-  return config ? createSupabaseBackend(config) : createLocalBackend();
+  const config = firebaseConfig();
+  return config ? createFirestoreBackend(config) : createLocalBackend();
 }

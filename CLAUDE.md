@@ -22,24 +22,31 @@ Tre saker bevakar du alltid:
 ## Datan
 
 - Planen (faser, pass, detaljer) ligger statiskt i `js/plan.js` — läs den vid behov.
-- Loggarna ligger i Supabase-tabellen `session_log` (en rad per vecka+slot;
-  slot 0 = Fys 1, 1 = Tennis 1, 2 = Fys 2, 3 = Tennis 2).
+- Loggarna ligger i Firestore-kollektionen `session_log` (ett dokument per pass,
+  id = `vecka:slot`; slot 0 = Fys 1, 1 = Tennis 1, 2 = Fys 2, 3 = Tennis 2).
 - Webbappen: https://christianarby.github.io/top-tennis/ (avbockning, metrics, trender).
 
-Läs loggen via Supabase REST (url + anon key från `window.SUPABASE_CONFIG` i `index.html`):
+Läs loggen via Firestore REST (projectId från `window.FIREBASE_CONFIG` i `index.html`;
+reglerna tillåter öppen läsning, ingen nyckel behövs):
 
 ```bash
-# Hela loggen (byt URL/KEY mot värdena i index.html)
-curl -s "$SUPABASE_URL/rest/v1/session_log?select=*&order=week,slot" \
-  -H "apikey: $ANON_KEY"
+# Hela loggen (Firestores typade format: fields.<namn>.integerValue osv.)
+curl -s "https://firestore.googleapis.com/v1/projects/$PROJECT_ID/databases/(default)/documents/session_log?pageSize=300"
 
-# Logga/uppdatera ett pass åt Christian (upsert på week+slot)
-curl -s -X POST "$SUPABASE_URL/rest/v1/session_log" \
-  -H "apikey: $ANON_KEY" -H "Content-Type: application/json" \
-  -H "Prefer: resolution=merge-duplicates" \
-  -d '{"week":1,"slot":1,"done":true,"date_completed":"2026-07-28",
-       "rpe":6,"metrics":{"first_serve_pct":55,"shoulder_feel":4}}'
+# Logga/uppdatera ett pass åt Christian (skriver om hela dokumentet "1:1")
+curl -s -X PATCH "https://firestore.googleapis.com/v1/projects/$PROJECT_ID/databases/(default)/documents/session_log/1:1" \
+  -H "Content-Type: application/json" \
+  -d '{"fields":{
+    "week":{"integerValue":"1"},"slot":{"integerValue":"1"},
+    "done":{"booleanValue":true},"date_completed":{"stringValue":"2026-07-28"},
+    "rpe":{"integerValue":"6"},
+    "metrics":{"mapValue":{"fields":{
+      "first_serve_pct":{"integerValue":"55"},"shoulder_feel":{"integerValue":"4"}}}},
+    "updated_at":{"stringValue":"2026-07-28T19:00:00Z"}}}'
 ```
+
+OBS: PATCH utan updateMask ersätter hela dokumentet — läs först och skicka med
+alla befintliga fält om du bara ändrar ett.
 
 Metrics-fälten per pass finns i `METRIC_FIELDS` i `js/plan.js`. Allt är valfritt —
 tjata inte in varje fält, men fråga alltid efter `shoulder_feel` på Tennis 1 och

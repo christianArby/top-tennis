@@ -12,11 +12,13 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="https://unpkg.com/uplot@1.6.31/dist/uPlot.iife.min.js" defer></script>
   <script>
-    // Fylls i när Supabase-projektet finns (samma mönster som pingis-ladder).
-    // Utan config körs appen mot localStorage (ingen sync).
-    window.SUPABASE_CONFIG = {
-      url: 'SUPABASE_URL_PLACEHOLDER',
-      anonKey: 'SUPABASE_ANON_KEY_PLACEHOLDER'
+    // Fylls i med webbappens config från Firebase Console (config-mönstret
+    // lånat från pingis-ladder). Utan config körs appen mot localStorage (ingen sync).
+    window.FIREBASE_CONFIG = {
+      apiKey: 'FIREBASE_API_KEY_PLACEHOLDER',
+      authDomain: 'FIREBASE_AUTH_DOMAIN_PLACEHOLDER',
+      projectId: 'FIREBASE_PROJECT_ID_PLACEHOLDER',
+      appId: 'FIREBASE_APP_ID_PLACEHOLDER'
     };
   </script>
 </head>

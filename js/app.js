@@ -250,8 +250,8 @@ function render() {
     el('header', { class: 'top' },
       el('h1', {}, 'Höstplan 🎾'),
       el('p', { class: 'sub' }, '12 veckor · 27 jul – 18 okt 2026 · ',
-        el('span', { class: `sync-badge ${store.name === 'supabase' ? 'online' : 'offline'}` },
-          store.name === 'supabase' ? 'sync på' : 'endast denna enhet')),
+        el('span', { class: `sync-badge ${store.name === 'firestore' ? 'online' : 'offline'}` },
+          store.name === 'firestore' ? 'sync på' : 'endast denna enhet')),
       el('div', { class: 'progress-total' },
         el('div', { class: 'bar' }, el('div', { style: `width:${(doneCount / total) * 100}%` })),
         el('span', { class: 'count' }, `${doneCount}/${total}`))

@@ -1,0 +1,16 @@
+// Firestore-regler för träningsloggen — klistras in under
+// Firebase Console → Firestore Database → Rules.
+//
+// Enanvändarlogg utan inloggning: bara kollektionen session_log är öppen,
+// och dokument-id:t måste vara "vecka:slot" inom planens gränser så att
+// ingen kan fylla databasen med skräp.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /session_log/{docId} {
+      allow read: if true;
+      allow write: if docId.matches('^([1-9]|1[0-2]):[0-3]$');
+    }
+  }
+}
