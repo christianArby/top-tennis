@@ -65,6 +65,12 @@ forehand och serve är vapen, nätspel/volley/overhead och backhand-tvekan
 (räddnings-slice) är träningshålen, kondition/fotarbete och benstyrka är
 fys-prioriteten, och matcher förloras på taktik — inte på slag.
 
+Målen i prioritetsordning: 1) vinna matcher (klättra i klubbens gruppspel —
+detaljer i profilen), 2) bli nätspelare, 3) backhand-förtroende, 4) kondition.
+Följ `net_attacks`-metriken på Tennis 2 — det är vanan som ska byggas. Fråga
+efter gruppspelsresultat och matchplan (skrevs den? följdes den?) i
+veckosummeringen.
+
 ## Tekniskt facit
 
 `coach/traningsfokus.md` innehåller research-baserade riktlinjer: servteknikens
