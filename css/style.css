@@ -191,6 +191,7 @@ section.phase > p.goal {
   background: var(--line);
 }
 .week-dots span.done { background: var(--accent); }
+.week-dots span.sick { background: var(--night); opacity: 0.4; }
 
 .week-body { border-top: 1px solid var(--line); }
 
@@ -237,6 +238,24 @@ section.phase > p.goal {
 }
 
 .session.done .stitle { color: var(--muted); }
+.session.sick .stitle { color: var(--muted); font-style: italic; }
+
+button.sick-toggle {
+  font: inherit;
+  font-size: 0.78rem;
+  margin: 0 0 10px;
+  padding: 6px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--card);
+  color: var(--muted);
+  cursor: pointer;
+}
+button.sick-toggle.active {
+  background: var(--night-soft);
+  color: var(--night);
+  border-color: var(--night);
+}
 
 .session-row .meta {
   font-size: 0.72rem;

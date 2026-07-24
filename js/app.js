@@ -51,7 +51,20 @@ function toggleDone(week, slot) {
   saveLog({
     ...prev,
     done,
+    sick: false,
     date_completed: done ? (prev.date_completed || todayISO()) : null
+  });
+}
+
+// Sjuk = ok att hoppa över passet; räknas inte som klart och lämnar hål i trenden.
+function toggleSick(week, slot) {
+  const prev = getLog(week, slot) || { week, slot, metrics: {} };
+  const sick = !prev.sick;
+  saveLog({
+    ...prev,
+    sick,
+    done: sick ? false : prev.done,
+    date_completed: sick ? null : prev.date_completed
   });
 }
 
@@ -139,6 +152,7 @@ function sessionRow(week, session) {
   const key = logKey(week, session.slot);
   const log = getLog(week, session.slot);
   const done = !!(log && log.done);
+  const sick = !!(log && log.sick);
 
   const checkbox = el('input', {
     type: 'checkbox',
@@ -148,6 +162,7 @@ function sessionRow(week, session) {
   checkbox.checked = done;
 
   const metaParts = [];
+  if (sick) metaParts.push('sjuk 🤒');
   if (log && log.date_completed) metaParts.push(log.date_completed.slice(5));
   if (log && log.rpe != null) metaParts.push(`RPE ${log.rpe}`);
 
@@ -164,10 +179,14 @@ function sessionRow(week, session) {
     el('span', { class: 'meta' }, metaParts.join(' · '))
   );
 
-  const wrap = el('div', { class: `session${done ? ' done' : ''}` }, row);
+  const wrap = el('div', { class: `session${done ? ' done' : ''}${sick ? ' sick' : ''}` }, row);
   if (expandedSessions.has(key)) {
     wrap.append(el('div', { class: 'session-detail' },
       el('p', { class: 'planned' }, session.planned_detail),
+      el('button', {
+        class: `sick-toggle${sick ? ' active' : ''}`, type: 'button',
+        onclick: () => toggleSick(week, session.slot)
+      }, sick ? 'Ta bort sjukmarkering' : 'Sjuk — hoppa över passet 🤒'),
       metricsForm(week, session.slot, log)
     ));
   }
@@ -179,7 +198,7 @@ function weekCard(week) {
   const sessions = sessionsForWeek(week);
   const dots = sessions.map((s) => {
     const log = getLog(week, s.slot);
-    return el('span', { class: log && log.done ? 'done' : '' });
+    return el('span', { class: log && log.done ? 'done' : (log && log.sick ? 'sick' : '') });
   });
 
   const head = el('button', {

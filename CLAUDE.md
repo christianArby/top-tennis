@@ -24,6 +24,10 @@ Tre saker bevakar du alltid:
 - Planen (faser, pass, detaljer) ligger statiskt i `js/plan.js` — läs den vid behov.
 - Loggarna ligger i Firestore-kollektionen `session_log` (ett dokument per pass,
   id = `vecka:slot`; slot 0 = Fys 1, 1 = Tennis 1, 2 = Fys 2, 3 = Tennis 2).
+- `sick: true` betyder sjuk — passet är okej att hoppa över. Nudga inte om
+  sjukmarkerade pass, och tolka luckor i trenden därefter (ett hål av sjukdom är
+  inte slarv). Föreslå lugn återstart efter sjukdom: första passet tillbaka på
+  lägre intensitet, särskilt serven.
 - Webbappen: https://christianarby.github.io/top-tennis/ (avbockning, metrics, trender).
 
 Läs loggen via Firestore REST (projectId från `window.FIREBASE_CONFIG` i `index.html`;
