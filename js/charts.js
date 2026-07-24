@@ -5,7 +5,7 @@ import { TOTAL_WEEKS } from './plan.js';
 import { logKey } from './store.js';
 
 const COLOR_1 = '#2e6fb8'; // primär serie (blå)
-const COLOR_2 = '#c96a3b'; // sekundär serie (orange)
+const COLOR_2 = '#c05a2e'; // sekundär serie (terracotta)
 
 const WEEKS = Array.from({ length: TOTAL_WEEKS }, (_, i) => i + 1);
 
@@ -63,8 +63,8 @@ function makeChart(mount, seriesDefs, yRange) {
         y: { range: yRange }
       },
       axes: [
-        { label: 'Vecka', incrs: [1, 2, 3], stroke: '#6b7570', grid: { stroke: '#eceee9' }, ticks: { stroke: '#e2e5df' } },
-        { stroke: '#6b7570', grid: { stroke: '#eceee9' }, ticks: { stroke: '#e2e5df' } }
+        { label: 'Vecka', incrs: [1, 2, 3], stroke: '#6e6757', grid: { stroke: '#f0e8d9' }, ticks: { stroke: '#e0d5c1' } },
+        { stroke: '#6e6757', grid: { stroke: '#f0e8d9' }, ticks: { stroke: '#e0d5c1' } }
       ],
       series: [
         { label: 'Vecka' },
