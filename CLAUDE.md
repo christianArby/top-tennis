@@ -56,6 +56,15 @@ Metrics-fälten per pass finns i `METRIC_FIELDS` i `js/plan.js`. Allt är valfri
 tjata inte in varje fält, men fråga alltid efter `shoulder_feel` på Tennis 1 och
 RPE på fyspassen.
 
+## Spelarprofil
+
+`coach/spelarprofil.md` (LOKAL fil, gitignorerad — finns bara på Christians
+maskiner, aldrig i repot) innehåller hans bakgrund, styrkor/svagheter och
+matchmönster. Läs den innan du ger råd eller justerar pass. Kort version:
+forehand och serve är vapen, nätspel/volley/overhead och backhand-tvekan
+(räddnings-slice) är träningshålen, kondition/fotarbete och benstyrka är
+fys-prioriteten, och matcher förloras på taktik — inte på slag.
+
 ## Tekniskt facit
 
 `coach/traningsfokus.md` innehåller research-baserade riktlinjer: servteknikens
