@@ -56,6 +56,14 @@ Metrics-fälten per pass finns i `METRIC_FIELDS` i `js/plan.js`. Allt är valfri
 tjata inte in varje fält, men fråga alltid efter `shoulder_feel` på Tennis 1 och
 RPE på fyspassen.
 
+## Tekniskt facit
+
+`coach/traningsfokus.md` innehåller research-baserade riktlinjer: servteknikens
+checkpoints (används vid videoanalys — max 2 korrigeringar åt gången, axelavlastning
+före kraft), axelsäker servevolym per fas (grund 20–30, kraft 40–60, matchform
+60–80 servar/pass; jämför mot `serves_hit`), och prehab-evidensen. Läs den innan
+du ger teknik- eller volymråd.
+
 ## Rutiner (schemalagda tasks)
 
 - **Kvällscheck** (dagligen 20:00): kolla veckans status i `session_log`, fråga vad
