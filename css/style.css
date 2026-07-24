@@ -391,6 +391,26 @@ form.metrics .saved-note { font-size: 0.78rem; color: var(--accent); font-weight
 .trend-table th:first-child, .trend-table td:first-child { text-align: left; }
 .trend-card .uplot { margin: 0 auto; }
 
+/* ---------- Profil ---------- */
+
+.goal-list, .strength-list {
+  margin: 0;
+  padding-left: 22px;
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.goal-list li::marker { color: var(--clay); font-weight: 700; }
+.strength-list li::marker { color: var(--accent); }
+
+.focus-item { padding: 8px 0; border-top: 1px solid var(--line); }
+.focus-item:first-of-type { border-top: none; }
+.focus-item b { font-size: 0.88rem; }
+.focus-item p { margin: 2px 0 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
+
+form.metrics input::placeholder, form.metrics textarea::placeholder {
+  color: #b3a992;
+}
+
 button.export {
   width: 100%;
   font: inherit;

@@ -1,9 +1,10 @@
 import {
-  PHASES, METRIC_FIELDS, RHYTHM_RULE, TOTAL_WEEKS, SLOTS_PER_WEEK,
+  PHASES, METRIC_FIELDS, RHYTHM_RULE, RPE_HINT, TOTAL_WEEKS, SLOTS_PER_WEEK,
   sessionsForWeek, weekDateLabel, currentWeek
 } from './plan.js';
 import { createStore, logKey } from './store.js';
 import { renderTrends } from './charts.js';
+import { PROFILE } from './profile.js';
 
 const app = document.getElementById('app');
 
@@ -93,7 +94,8 @@ function metricsForm(week, slot, log) {
     } else {
       const input = el('input', {
         type: f.type === 'number' ? 'number' : 'text',
-        min: f.min, max: f.max, inputmode: f.type === 'number' ? 'numeric' : undefined
+        min: f.min, max: f.max, inputmode: f.type === 'number' ? 'numeric' : undefined,
+        placeholder: f.hint
       });
       input.name = f.key;
       if (metrics[f.key] !== undefined && metrics[f.key] !== null) input.value = metrics[f.key];
@@ -101,7 +103,7 @@ function metricsForm(week, slot, log) {
     }
   }
 
-  const rpe = el('input', { type: 'number', min: 1, max: 10, inputmode: 'numeric' });
+  const rpe = el('input', { type: 'number', min: 1, max: 10, inputmode: 'numeric', placeholder: RPE_HINT });
   rpe.name = 'rpe';
   if (log && log.rpe != null) rpe.value = log.rpe;
   form.append(fieldWrap('RPE (1–10)', rpe));
@@ -259,6 +261,36 @@ function trendsView() {
   return frag;
 }
 
+/* ---------- Profil-vyn ---------- */
+
+function profileView() {
+  const frag = document.createDocumentFragment();
+
+  frag.append(el('div', { class: 'trend-card' },
+    el('h3', {}, 'Mål'),
+    el('p', { class: 'desc' }, PROFILE.background),
+    el('ol', { class: 'goal-list' },
+      ...PROFILE.goals.map((g) => el('li', {}, g)))
+  ));
+
+  frag.append(el('div', { class: 'trend-card' },
+    el('h3', {}, 'Styrkor'),
+    el('p', { class: 'desc' }, 'Vapnen som passen bygger vidare på.'),
+    el('ul', { class: 'strength-list' },
+      ...PROFILE.strengths.map((s) => el('li', {}, s)))
+  ));
+
+  frag.append(el('div', { class: 'trend-card' },
+    el('h3', {}, 'Tänk på'),
+    el('p', { class: 'desc' }, 'Det här är vanorna som vinner matcher — läs innan passet.'),
+    ...PROFILE.focus.map((f) => el('div', { class: 'focus-item' },
+      el('b', {}, f.title),
+      el('p', {}, f.detail)))
+  ));
+
+  return frag;
+}
+
 /* ---------- Skal ---------- */
 
 function render() {
@@ -277,9 +309,10 @@ function render() {
     ),
     el('nav', { class: 'tabs' },
       el('button', { class: view === 'plan' ? 'active' : '', onclick: () => { view = 'plan'; render(); } }, 'Plan'),
-      el('button', { class: view === 'trender' ? 'active' : '', onclick: () => { view = 'trender'; render(); } }, 'Trender')
+      el('button', { class: view === 'trender' ? 'active' : '', onclick: () => { view = 'trender'; render(); } }, 'Trender'),
+      el('button', { class: view === 'profil' ? 'active' : '', onclick: () => { view = 'profil'; render(); } }, 'Profil')
     ),
-    view === 'plan' ? planView() : trendsView()
+    view === 'plan' ? planView() : view === 'trender' ? trendsView() : profileView()
   );
 }
 

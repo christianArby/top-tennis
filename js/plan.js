@@ -51,29 +51,32 @@ export const SESSIONS_PER_PHASE = {
 };
 
 // Metrics-fält per pass-slot. Allt är valfritt — logga det du orkar.
-// type: 'number' | 'text' | 'bool'; min/max används för validering och hints.
+// type: 'number' | 'text' | 'bool'; hint visas som platshållartext i fältet.
 export const METRIC_FIELDS = {
   1: [ // Tennis 1 – serve
-    { key: 'first_serve_pct', label: 'Förstaserve %', type: 'number', min: 0, max: 100 },
-    { key: 'second_serve_pct', label: 'Andraserve %', type: 'number', min: 0, max: 100 },
-    { key: 'serves_hit', label: 'Antal servar', type: 'number', min: 0, max: 500 },
-    { key: 'shoulder_feel', label: 'Axelkänsla (1–5)', type: 'number', min: 1, max: 5 }
+    { key: 'first_serve_pct', label: 'Förstaserve %', type: 'number', min: 0, max: 100, hint: 'andel 1:or i rutan, 0–100' },
+    { key: 'second_serve_pct', label: 'Andraserve %', type: 'number', min: 0, max: 100, hint: 'andel 2:or i rutan' },
+    { key: 'serves_hit', label: 'Antal servar', type: 'number', min: 0, max: 500, hint: 'totalt under passet' },
+    { key: 'shoulder_feel', label: 'Axelkänsla (1–5)', type: 'number', min: 1, max: 5, hint: '1 = ont, 5 = toppen' }
   ],
   3: [ // Tennis 2 – match/taktik
     { key: 'sets_played', label: 'Antal set', type: 'number', min: 0, max: 10 },
-    { key: 'result', label: 'Resultat', type: 'text' },
-    { key: 'net_attacks', label: 'Nätattacker', type: 'number', min: 0, max: 200 },
-    { key: 'movement_feel', label: 'Rörelsekänsla (1–5)', type: 'number', min: 1, max: 5 }
+    { key: 'result', label: 'Resultat', type: 'text', hint: 't.ex. 6-4, 3-6' },
+    { key: 'net_attacks', label: 'Nätattacker', type: 'number', min: 0, max: 200, hint: 'antal gånger du gick till nät' },
+    { key: 'movement_feel', label: 'Rörelsekänsla (1–5)', type: 'number', min: 1, max: 5, hint: '1 = tung, 5 = lätt på foten' }
   ],
   0: [ // Fys 1
-    { key: 'top_set_reps', label: 'Reps toppset', type: 'number', min: 0, max: 100 },
+    { key: 'top_set_reps', label: 'Reps toppset', type: 'number', min: 0, max: 100, hint: 'bästa setet, t.ex. pull-ups' },
     { key: 'felt_hard', label: 'Kändes tungt', type: 'bool' }
   ],
   2: [ // Fys 2
-    { key: 'top_set_reps', label: 'Reps toppset', type: 'number', min: 0, max: 100 },
+    { key: 'top_set_reps', label: 'Reps toppset', type: 'number', min: 0, max: 100, hint: 'bästa setet i huvudövningen' },
     { key: 'felt_hard', label: 'Kändes tungt', type: 'bool' }
   ]
 };
+
+// Platshållare för fält som finns på alla pass.
+export const RPE_HINT = '1 = lätt, 10 = max';
 
 export function phaseForWeek(week) {
   return PHASES.find((p) => p.weeks.includes(week));
