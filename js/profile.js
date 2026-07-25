@@ -30,6 +30,8 @@ export const PROFILE = {
     { title: 'Split-step även när du är trött',
       detail: 'Fotarbetet försvinner med tröttheten — det är därför fys-passens intervaller finns.' },
     { title: 'Lyssna på axeln',
-      detail: 'Logga axelkänslan efter varje servepass. Trendar den nedåt sänks serveintensiteten — inga hjältedåd.' }
+      detail: 'Logga axelkänslan efter varje servepass. Trendar den nedåt sänks serveintensiteten — inga hjältedåd.' },
+    { title: 'Skydda ländryggen',
+      detail: 'Dead bug och höftlyft är ryggens grundskydd, och höftböjarstretchen efter fyspasset är inte valfri. Bålen ska stå emot rörelse — svanken stannar i golvet på varje dead bug-rep.' }
   ]
 };

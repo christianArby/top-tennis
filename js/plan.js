@@ -20,31 +20,31 @@ export const PHASES = [
 export const SESSIONS_PER_PHASE = {
   grund: [
     { slot: 0, kind: 'fys', label: 'Fys 1', title: 'Styrka & stabilitet',
-      planned_detail: 'Uppv: hopprep 3 min + 2x15 bandutåtrotation. Bulgarian split squat 3x8/ben, pull-ups/negativa 3xmax, pike push-ups 3x8, sidoplanka 3x30s, bandutåtrotation 3x15. Under maxen — groova rörelsen.' },
+      planned_detail: 'Uppv: hopprep 3 min + 2x15 bandutåtrotation. Bulgarian split squat 3x8/ben, pull-ups/negativa 3xmax, pike push-ups 3x8, dead bug 3x10/sida (svanken kvar i golvet!), höftlyft 3x12, sidoplanka 3x30s, bandutåtrotation 3x15. Avsluta: höftböjarstretch 2x30s/sida — för ländryggen. Under maxen — groova rörelsen.' },
     { slot: 1, kind: 'tennis', label: 'Tennis 1', title: 'Serve & volleygrund',
       planned_detail: '20 min servekorg: rytm + placering (ut/kropp/T), inte kraft. 15 min volleygrund vid nät (partner matar eller vägg) — korta grepp, möt bollen framför kroppen. Avsluta med poängspel: bestäm före varje serve var serve+1-forehanden ska.' },
     { slot: 2, kind: 'fys', label: 'Fys 2', title: 'Kraft & kondition',
-      planned_detail: 'Medbollslam 4x5, rotationskast mot vägg 4x6/sida, knäböjshopp 4x5, utfallssteg 3x10/ben, intervaller 6x(20s/40s), hollow hold 3x30s.' },
+      planned_detail: 'Medbollslam 4x5, rotationskast mot vägg 4x6/sida, knäböjshopp 4x5, utfallssteg 3x10/ben, intervaller 6x(20s/40s), hollow hold 3x30s. Avsluta: höftböjarstretch 2x30s/sida.' },
     { slot: 3, kind: 'tennis', label: 'Tennis 2', title: 'Nätattack & match',
       planned_detail: 'Drill: partnern spelar kort boll → forehand-attack → följ till nät → avsluta med volley (20 upprepningar). Backhand: 20 bollar cross där du DRIVER — slice är förbjuden i drillen. Matchspel med regel: minst en nätattack per game. Logga antal nätattacker.' }
   ],
   kraft: [
     { slot: 0, kind: 'fys', label: 'Fys 1', title: 'Styrka & stabilitet +',
-      planned_detail: 'Bulgarian split squat 4x8/ben (håll medboll), pull-ups 4xmax, deficit/pike push-ups 4x8, sidoplanka m. höftlyft 3x12/sida, Pallof + bandutåtrotation 3x12.' },
+      planned_detail: 'Bulgarian split squat 4x8/ben (håll medboll), pull-ups 4xmax, deficit/pike push-ups 4x8, dead bug 3x10/sida, höftlyft 4x10 (tyngre — vikt på höften), sidoplanka m. höftlyft 3x12/sida, Pallof + bandutåtrotation 3x12. Avsluta: höftböjarstretch 2x30s/sida.' },
     { slot: 1, kind: 'tennis', label: 'Tennis 1', title: 'Serve + overhead',
       planned_detail: '25 min serve: bygg kraft, träffa ut/kropp/T medvetet. 10 min overhead: partnern lobbar, börja nära nät och backa gradvis — samma avslappnade arm som i serven. Poängspel där du vinner på serven.' },
     { slot: 2, kind: 'fys', label: 'Fys 2', title: 'Kraft & kondition +',
-      planned_detail: 'Medbollslam 5x5, rotationskast 5x6/sida, box-/knäböjshopp 5x5, utfallshopp 4x8/ben, intervaller 8x(20/40), hollow hold 3x40s.' },
+      planned_detail: 'Medbollslam 5x5, rotationskast 5x6/sida, box-/knäböjshopp 5x5, utfallshopp 4x8/ben, intervaller 8x(20/40), hollow hold 3x40s. Avsluta: höftböjarstretch 2x30s/sida.' },
     { slot: 3, kind: 'tennis', label: 'Tennis 2', title: 'Taktik & tempovariation',
       planned_detail: 'Spela poäng med en bestämd plan per game (t.ex. serve ut + attack i öppen bana). Variera höjd, skruv och tempo — ge inte motståndaren gratis fart att låna. Nätattack på varje kort boll. Split-step före varje motståndarslag.' }
   ],
   matchform: [
     { slot: 0, kind: 'fys', label: 'Fys 1', title: 'Styrka – underhåll',
-      planned_detail: 'Bulgarian split squat 3x10/ben, pull-ups 3xmax, push-ups 3x12, sidoplanka 3x40s, bandutåtrotation 3x15. Håll kvaliteten, jaga inte utmattning.' },
+      planned_detail: 'Bulgarian split squat 3x10/ben, pull-ups 3xmax, push-ups 3x12, dead bug 3x10/sida, höftlyft 3x12, sidoplanka 3x40s, bandutåtrotation 3x15. Avsluta: höftböjarstretch 2x30s/sida. Håll kvaliteten, jaga inte utmattning.' },
     { slot: 1, kind: 'tennis', label: 'Tennis 1', title: 'Serve under press',
       planned_detail: '15 min serve-underhåll, sedan set med serven under press — hög andraservprocent i poäng som räknas.' },
     { slot: 2, kind: 'fys', label: 'Fys 2', title: 'Kraft – underhåll',
-      planned_detail: 'Medbollslam 4x5, rotationskast 4x6/sida, knäböjshopp 4x5, intervaller 6x(20/40), hollow hold 3x30s. Håll dig fräsch.' },
+      planned_detail: 'Medbollslam 4x5, rotationskast 4x6/sida, knäböjshopp 4x5, intervaller 6x(20/40), hollow hold 3x30s. Avsluta: höftböjarstretch 2x30s/sida. Håll dig fräsch.' },
     { slot: 3, kind: 'tennis', label: 'Tennis 2', title: 'Set med matchplan',
       planned_detail: 'Skriv en matchplan på tre punkter INNAN passet (t.ex. attackera kort boll till nät, driva backhanden, variera tempot). Spela hela set — gärna gruppspelsmatch. Tävlingslika situationer: 30-40, tie-break, serva för matchen. Utvärdera efteråt: följde du planen?' }
   ]
