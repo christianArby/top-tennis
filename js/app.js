@@ -5,6 +5,7 @@ import {
 import { createStore, logKey } from './store.js';
 import { renderTrends } from './charts.js';
 import { PROFILE } from './profile.js';
+import { EXERCISES, exercisePattern, exerciseKeyFor } from './exercises.js';
 
 const app = document.getElementById('app');
 
@@ -67,6 +68,51 @@ function toggleSick(week, slot) {
     done: sick ? false : prev.done,
     date_completed: sick ? null : prev.date_completed
   });
+}
+
+/* ---------- Övningslexikon ---------- */
+
+function showExercise(key) {
+  const ex = EXERCISES[key];
+  if (!ex) return;
+  let dlg = document.getElementById('ex-dialog');
+  if (!dlg) {
+    dlg = el('dialog', { id: 'ex-dialog' });
+    // Klick på backdrop (utanför innehållet) stänger.
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    document.body.append(dlg);
+  }
+  const fig = el('div', { class: 'dlg-fig' });
+  if (ex.svg) fig.innerHTML = ex.svg;
+  dlg.replaceChildren(
+    el('button', { class: 'dlg-close', type: 'button', 'aria-label': 'Stäng', onclick: () => dlg.close() }, '✕'),
+    ex.svg ? fig : null,
+    el('h3', {}, ex.name),
+    el('p', { class: 'dlg-desc' }, ex.desc),
+    el('ul', { class: 'dlg-cues' }, ...ex.cues.map((c) => el('li', {}, c))),
+    el('a', {
+      class: 'dlg-video', target: '_blank', rel: 'noopener',
+      href: `https://www.youtube.com/results?search_query=${encodeURIComponent(ex.video)}`
+    }, 'Se video på YouTube ↗')
+  );
+  dlg.showModal();
+}
+
+// Gör övningsnamn i en text klickbara.
+function linkifyExercises(text) {
+  const frag = document.createDocumentFragment();
+  let last = 0;
+  for (const m of text.matchAll(exercisePattern())) {
+    const key = exerciseKeyFor(m[0]);
+    if (!key) continue;
+    frag.append(text.slice(last, m.index));
+    frag.append(el('button', {
+      class: 'ex-link', type: 'button', onclick: () => showExercise(key)
+    }, m[0]));
+    last = m.index + m[0].length;
+  }
+  frag.append(text.slice(last));
+  return frag;
 }
 
 /* ---------- Plan-vyn ---------- */
@@ -184,7 +230,7 @@ function sessionRow(week, session) {
   const wrap = el('div', { class: `session${done ? ' done' : ''}${sick ? ' sick' : ''}` }, row);
   if (expandedSessions.has(key)) {
     wrap.append(el('div', { class: 'session-detail' },
-      el('p', { class: 'planned' }, session.planned_detail),
+      el('p', { class: 'planned' }, linkifyExercises(session.planned_detail)),
       el('button', {
         class: `sick-toggle${sick ? ' active' : ''}`, type: 'button',
         onclick: () => toggleSick(week, session.slot)
@@ -285,7 +331,7 @@ function profileView() {
     el('p', { class: 'desc' }, 'Det här är vanorna som vinner matcher — läs innan passet.'),
     ...PROFILE.focus.map((f) => el('div', { class: 'focus-item' },
       el('b', {}, f.title),
-      el('p', {}, f.detail)))
+      el('p', {}, linkifyExercises(f.detail))))
   ));
 
   return frag;
