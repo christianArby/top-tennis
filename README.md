@@ -1,7 +1,9 @@
-# Höstplan · Tennis 12 veckor 🎾
+# Tennisdagbok 🎾
 
-Personlig träningslogg för ett 12-veckors tennis-/fysprogram (start 27 juli 2026).
-Loggar pass, RPE, serve-% och `shoulder_feel`, visar trender och syncar mellan telefon och laptop.
+Personlig tennisdagbok: vad jag spelade, med vilket racket och strängning, och hur
+det kändes. Posterna skrivs av en Claude-coach utifrån min berättelse (se
+`CLAUDE.md`); sajten är läsvyn och syncar mellan telefon och laptop.
+Höstplanen (12-veckorsprogrammet 27 jul – 18 okt 2026) ligger kvar som arkiv.
 
 ## Stack
 
@@ -21,7 +23,10 @@ ingen bundler, ingen build — bara push och kör.
 
 ## Struktur
 
-- `js/plan.js` — hela 12-veckorsplanen som statisk seed-data (3 faser × 4 pass/vecka).
-- `js/store.js` — all datalagring; väljer Firestore eller localStorage.
-- `js/app.js` — vyer: plan (avbockning + metrics-formulär) och trender.
-- `firebase/firestore.rules` — regler för kollektionen `session_log` (dokument-id `vecka:slot`).
+- `js/app.js` — skal och flikar: Dagbok, Trender, Profil, Arkiv.
+- `js/diary.js` — dagboksposter och racketar med strängningshistorik.
+- `js/archive.js` + `js/plan.js` — Höstplanen i läsläge.
+- `js/store.js` — all datalagring per kollektion; Firestore eller localStorage.
+- `js/exercises.js` — övningslexikon (klickbara övningsnamn med popup).
+- `coach/fs.mjs` — coachens CLI för att läsa/skriva Firestore med vanlig JSON.
+- `firebase/firestore.rules` — regler för `diary`, `rackets` och `session_log`.

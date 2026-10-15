@@ -60,36 +60,9 @@ header.top h1 {
 }
 
 header.top .sub {
-  margin: 4px 0 14px;
+  margin: 4px 0 0;
   color: rgba(253, 250, 244, 0.75);
   font-size: 0.85rem;
-}
-
-.progress-total {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.progress-total .bar {
-  flex: 1;
-  height: 10px;
-  background: rgba(253, 250, 244, 0.25);
-  border-radius: 5px;
-  overflow: hidden;
-}
-
-.progress-total .bar > div {
-  height: 100%;
-  background: var(--ball);
-  border-radius: 5px;
-  transition: width 0.3s ease;
-}
-
-.progress-total .count {
-  font-weight: 700;
-  font-size: 0.95rem;
-  white-space: nowrap;
 }
 
 .sync-badge { font-size: 0.72rem; }
@@ -178,8 +151,6 @@ section.phase > p.goal {
   box-shadow: 0 1px 2px rgba(60, 45, 25, 0.05);
 }
 
-.week.current { border-color: var(--clay); box-shadow: 0 0 0 1px var(--clay); }
-
 .week-head {
   width: 100%;
   display: flex;
@@ -196,10 +167,6 @@ section.phase > p.goal {
 
 .week-head .wtitle { font-weight: 700; }
 .week-head .wdates { color: var(--muted); font-size: 0.8rem; flex: 1; }
-.week-head .now-chip {
-  font-size: 0.66rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-  color: var(--card); background: var(--clay); padding: 3px 9px; border-radius: 999px;
-}
 
 .week-dots { display: flex; gap: 5px; }
 .week-dots span {
@@ -223,10 +190,22 @@ section.phase > p.goal {
   padding: 11px 14px;
 }
 
-.session-row input[type="checkbox"] {
-  width: 22px; height: 22px;
-  accent-color: var(--accent);
+.session-row .status {
+  width: 20px;
   flex-shrink: 0;
+  text-align: center;
+  font-weight: 700;
+  color: var(--muted);
+}
+.session-row .status.done { color: var(--accent); }
+
+.session-detail .logged {
+  margin: 0;
+  font-size: 0.8rem;
+  color: var(--ink);
+  background: #f5eee1;
+  border-radius: 8px;
+  padding: 8px 10px;
 }
 
 .session-row .label {
@@ -256,23 +235,6 @@ section.phase > p.goal {
 .session.done .stitle { color: var(--muted); }
 .session.sick .stitle { color: var(--muted); font-style: italic; }
 
-button.sick-toggle {
-  font: inherit;
-  font-size: 0.78rem;
-  margin: 0 0 10px;
-  padding: 6px 12px;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  background: var(--card);
-  color: var(--muted);
-  cursor: pointer;
-}
-button.sick-toggle.active {
-  background: var(--night-soft);
-  color: var(--night);
-  border-color: var(--night);
-}
-
 .session-row .meta {
   font-size: 0.72rem;
   color: var(--muted);
@@ -290,71 +252,91 @@ button.sick-toggle.active {
   margin: 0 0 10px;
 }
 
-/* ---------- Metrics-formulär ---------- */
+/* ---------- Dagbok ---------- */
 
-form.metrics {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  background: #f5eee1;
-  border-radius: 10px;
-  padding: 12px;
-}
-
-form.metrics .field { display: flex; flex-direction: column; gap: 3px; }
-form.metrics .field.wide { grid-column: 1 / -1; }
-
-form.metrics label {
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--muted);
-}
-
-form.metrics input[type="number"],
-form.metrics input[type="text"],
-form.metrics input[type="date"],
-form.metrics select,
-form.metrics textarea {
-  font: inherit;
-  font-size: 0.9rem;
-  padding: 7px 9px;
-  border: 1px solid var(--line);
-  border-radius: 8px;
+.entry {
   background: var(--card);
-  color: var(--ink);
-  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 1px 2px rgba(60, 45, 25, 0.05);
 }
 
-form.metrics textarea { resize: vertical; min-height: 44px; }
-
-form.metrics .checkfield {
-  flex-direction: row;
-  align-items: center;
-  gap: 8px;
-  padding-top: 16px;
-}
-form.metrics .checkfield input { width: 18px; height: 18px; accent-color: var(--clay); }
-form.metrics .checkfield label { font-size: 0.85rem; color: var(--ink); }
-
-form.metrics .actions {
-  grid-column: 1 / -1;
+.entry-head {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 8px;
 }
 
-form.metrics button {
-  font: inherit;
+.entry-date {
+  font-family: "Fraunces", Georgia, serif;
+  font-weight: 600;
+  font-size: 1.05rem;
+}
+
+.chip {
+  display: inline-block;
+  font-size: 0.68rem;
   font-weight: 700;
-  padding: 9px 24px;
-  border: none;
+  padding: 3px 9px;
   border-radius: 999px;
-  background: var(--clay);
-  color: #fff;
-  cursor: pointer;
+}
+.chip.type.tennis { background: var(--accent-soft); color: var(--accent); }
+.chip.type.match { background: var(--clay); color: var(--card); }
+.chip.type.fys { background: var(--clay-soft); color: var(--clay); }
+.chip.racket {
+  background: #f5eee1;
+  color: var(--muted);
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+.chip.pending { background: var(--night-soft); color: var(--night); }
+
+.feel { display: inline-flex; gap: 3px; margin-left: auto; }
+.feel span {
+  width: 9px; height: 9px; border-radius: 50%;
+  background: var(--line);
+}
+.feel span.on { background: var(--ball); box-shadow: inset 0 0 0 1px rgba(33, 55, 43, 0.25); }
+
+.entry-text { margin-bottom: 8px; }
+.entry-label {
+  display: block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--muted);
+  margin-bottom: 2px;
+}
+.entry-text p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
+
+.entry-pending {
+  margin: 0;
+  font-size: 0.84rem;
+  font-style: italic;
+  color: var(--muted);
 }
 
-form.metrics .saved-note { font-size: 0.78rem; color: var(--accent); font-weight: 500; }
+.coach-note {
+  margin: 10px 0 0;
+  padding: 8px 12px;
+  border-left: 3px solid var(--accent);
+  background: var(--accent-soft);
+  border-radius: 6px;
+  font-size: 0.84rem;
+  line-height: 1.5;
+}
+
+.racket-item { padding: 8px 0; border-top: 1px solid var(--line); }
+.racket-item:first-of-type { border-top: none; }
+.racket-head { display: flex; align-items: center; gap: 8px; }
+.racket-head b { font-size: 0.9rem; }
+.racket-item p { margin: 3px 0 0; font-size: 0.84rem; }
+.racket-item .upcoming { color: var(--night); }
+.racket-item .history { color: var(--muted); font-size: 0.78rem; }
 
 /* ---------- Trender ---------- */
 
@@ -483,10 +465,6 @@ dialog#ex-dialog::backdrop { background: rgba(33, 55, 43, 0.45); }
 .focus-item:first-of-type { border-top: none; }
 .focus-item b { font-size: 0.88rem; }
 .focus-item p { margin: 2px 0 0; font-size: 0.82rem; color: var(--muted); line-height: 1.5; }
-
-form.metrics input::placeholder, form.metrics textarea::placeholder {
-  color: #b3a992;
-}
 
 button.export {
   width: 100%;

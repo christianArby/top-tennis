@@ -1,7 +1,10 @@
 // All datalagring går genom den här modulen: Firestore när config finns i
 // index.html, annars localStorage (appen funkar, men utan sync mellan enheter).
 //
-// En logg-rad: { week, slot, done, date_completed, rpe, note, metrics, updated_at }
+// Kollektioner:
+//   diary       — dagboksposter, id = datum (2026-10-15, 2026-10-15-2 vid flera samma dag)
+//   rackets     — racketar med strängningshistorik, id = a | b
+//   session_log — Höstplanens loggar (arkiv), id = vecka:slot
 
 export function logKey(week, slot) {
   return `${week}:${slot}`;
@@ -14,25 +17,26 @@ function firebaseConfig() {
   return c;
 }
 
-const LS_KEY = 'top-tennis-logs';
+// session_log behåller sin gamla nyckel så att tidigare lokal data hittas.
+const lsKey = (coll) => (coll === 'session_log' ? 'top-tennis-logs' : `top-tennis:${coll}`);
 
 function createLocalBackend() {
-  const read = () => JSON.parse(localStorage.getItem(LS_KEY) || '{}');
+  const read = (coll) => JSON.parse(localStorage.getItem(lsKey(coll)) || '{}');
   return {
     name: 'local',
-    async load() {
-      return read();
+    async load(coll) {
+      return read(coll);
     },
-    async upsert(log) {
-      const map = read();
-      map[logKey(log.week, log.slot)] = log;
-      localStorage.setItem(LS_KEY, JSON.stringify(map));
+    async upsert(coll, id, doc) {
+      const map = read(coll);
+      map[id] = doc;
+      localStorage.setItem(lsKey(coll), JSON.stringify(map));
     },
-    subscribe(onRow) {
+    subscribe(coll, onDoc) {
       // Håller flikar på samma enhet i sync; händelsen triggar inte i egna fliken.
       window.addEventListener('storage', (e) => {
-        if (e.key !== LS_KEY || !e.newValue) return;
-        for (const row of Object.values(JSON.parse(e.newValue))) onRow(row);
+        if (e.key !== lsKey(coll) || !e.newValue) return;
+        for (const [id, doc] of Object.entries(JSON.parse(e.newValue))) onDoc(id, doc);
       });
     }
   };
@@ -43,22 +47,21 @@ async function createFirestoreBackend(config) {
   const { getFirestore, collection, doc, setDoc, getDocs, onSnapshot } =
     await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
   const db = getFirestore(initializeApp(config));
-  const logsRef = collection(db, 'session_log');
   return {
     name: 'firestore',
-    async load() {
-      const snapshot = await getDocs(logsRef);
+    async load(coll) {
+      const snapshot = await getDocs(collection(db, coll));
       const map = {};
       snapshot.forEach((d) => { map[d.id] = d.data(); });
       return map;
     },
-    async upsert(log) {
-      await setDoc(doc(logsRef, logKey(log.week, log.slot)), log);
+    async upsert(coll, id, data) {
+      await setDoc(doc(collection(db, coll), id), data);
     },
-    subscribe(onRow) {
-      onSnapshot(logsRef, (snapshot) => {
+    subscribe(coll, onDoc) {
+      onSnapshot(collection(db, coll), (snapshot) => {
         for (const change of snapshot.docChanges()) {
-          if (change.type !== 'removed') onRow(change.doc.data());
+          if (change.type !== 'removed') onDoc(change.doc.id, change.doc.data());
         }
       });
     }

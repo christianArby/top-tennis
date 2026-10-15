@@ -3,10 +3,10 @@
 
 export const PROFILE = {
   background:
-    'Spelat sedan 2012, betydligt mer de senaste åren — nu 1–2 pass i veckan ' +
-    'plus gruppspel. Racket: Yonex Ezone 98.',
+    'Spelat sedan 2012, betydligt mer de senaste åren — vuxentennis plus ' +
+    'gruppspel i Gustavsbergs TK. Racket: 2× Yonex Ezone 98.',
   goals: [
-    'Vinna matcher — klättra från grupp 4 mot grupp 2 i gruppspelet',
+    'Vinna matcher — klättra från grupp 3 mot grupp 2 i gruppspelet',
     'Bli nätspelare: attack på kort boll → volley/overhead som vana',
     'Backhand-förtroende: driva under press i stället för räddnings-slice',
     'Kondition och fotarbete som håller hela matchen'
