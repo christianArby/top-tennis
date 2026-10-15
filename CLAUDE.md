@@ -84,9 +84,12 @@ därifrån i stället för att be honom upprepa siffrorna.
   korrigeringar, axelavlastning före kraft), axelsäker servevolym, prehab.
 - `js/exercises.js` — övningslexikonet som sajten länkar till.
 
-## Rutin
+## Rutiner (schemalagda tasks)
 
-- **Kvällscheck** (dagligen 20:00): finns ingen dagbokspost för idag — fråga
+- **Matchförberedelse** (lördag 19:00): finns en gruppspelsmatch inom ~36 h —
+  motståndarens siffror från backhandsmash, matchplan på tre punkter, val av
+  racket och praktiskt. Annars tyst.
+- **Kvällscheck** (dagligen 22:00): finns ingen dagbokspost för idag — fråga
   kort om han spelat, och logga om han svarar. Finns en post som väntar på
   berättelse — påminn om just den. Annars: säg ingenting.
 

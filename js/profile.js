@@ -4,7 +4,7 @@
 export const PROFILE = {
   background:
     'Spelat sedan 2012, betydligt mer de senaste åren — vuxentennis plus ' +
-    'gruppspel i Gustavsbergs TK. Racket: 2× Yonex Ezone 98.',
+    'gruppspel i Gustavsbergs TK. Racket: Yonex Ezone 98, 2025 och 2026.',
   goals: [
     'Vinna matcher — klättra från grupp 3 mot grupp 2 i gruppspelet',
     'Bli nätspelare: attack på kort boll → volley/overhead som vana',
