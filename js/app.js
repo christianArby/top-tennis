@@ -1,6 +1,6 @@
 import { createStore } from './store.js';
 import { renderDiaryTrends } from './charts.js';
-import { PROFILE } from './profile.js';
+import { PROFILE, NEXT_MATCH } from './profile.js';
 import { el, todayISO, linkifyExercises } from './dom.js';
 import { diaryView, racketsCard, sortedEntries } from './diary.js';
 import { archiveView } from './archive.js';
@@ -39,6 +39,16 @@ function trendsView() {
 
 function profileView() {
   const frag = document.createDocumentFragment();
+
+  if (NEXT_MATCH && NEXT_MATCH.date >= todayISO()) {
+    frag.append(el('div', { class: 'trend-card next-match' },
+      el('h3', {}, NEXT_MATCH.title),
+      el('p', { class: 'desc' }, NEXT_MATCH.when),
+      ...NEXT_MATCH.points.map((pt) => el('div', { class: 'focus-item' },
+        el('b', {}, pt.title, el('span', { class: `src ${pt.src.toLowerCase()}` }, pt.src)),
+        el('p', {}, pt.detail)))
+    ));
+  }
 
   const rackets = racketsCard(data.rackets, todayISO());
   if (rackets) frag.append(rackets);
