@@ -82,31 +82,3 @@ export function diaryView(entries, rackets) {
   for (const entry of list) frag.append(entryCard(entry, rackets));
   return frag;
 }
-
-export function racketsCard(rackets, today) {
-  const ids = Object.keys(rackets).sort();
-  if (!ids.length) return null;
-  return el('div', { class: 'trend-card' },
-    el('h3', {}, 'Racketar'),
-    el('p', { class: 'desc' }, 'Aktuell strängning och historik.'),
-    ...ids.map((id) => {
-      const r = rackets[id];
-      const current = stringingAt(r, today);
-      const upcoming = (r.stringings || []).filter((s) => !s.date || s.date > today);
-      const history = (r.stringings || []).filter((s) => s.date && s.date <= today && s !== current).reverse();
-      return el('div', { class: 'racket-item' },
-        el('div', { class: 'racket-head' },
-          el('b', {}, `${id.toUpperCase()} · ${r.name}`),
-          r.status && r.status !== 'i bruk' ? el('span', { class: 'chip pending' }, r.status) : null),
-        current
-          ? el('p', {}, `${stringingLabel(current)} — strängad ${formatDate(current.date)}` +
-            (daysBetween(current.date, today) === 0 ? ' (idag)' : ` (${daysBetween(current.date, today)} d sedan)`))
-          : null,
-        ...upcoming.map((s) => el('p', { class: 'upcoming' }, `På gång: ${stringingLabel(s)}`)),
-        history.length
-          ? el('p', { class: 'history' }, 'Tidigare: ' + history.map((s) => `${stringingLabel(s)} (${s.date})`).join(' · '))
-          : null
-      );
-    })
-  );
-}

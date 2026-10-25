@@ -74,8 +74,14 @@ till träningsmatcher/-sessioner via kortet (`source: manual`).
 
 Kortet visar rackval, en packlista (Powerade, vatten, Corny/banan, skor, linser,
 + bollar om `balls: true`) och tänk-på-punkter ur `coach/bocker.md`. Rackvalet är
-automatiskt (match: mest använda racketet; träning: det som vilat längst) —
-sätt `racket` + `racket_reason` för att överstyra. Sätt `points` för
+automatiskt utifrån strängspänningen (`js/rackets.js`): match får racketet med
+fräschast strängning, träning spelar slut det äldre — så Christian alltid har ett
+racket med bra spänning, och de två strängningarna åldras i otakt. Modellen är en
+uppskattning för polyester (~12 % tapp första dygnet, omsträngning efter ~18
+speltimmar eller 8 veckor), räknad på pass i dagboken — därför är `racket` på
+varje dagbokspost viktigt. Profil-fliken visar uppskattad kg och pass kvar per
+racket. Tipsa om omsträngning i god tid så de inte tar slut samtidigt. Sätt
+`racket` + `racket_reason` på ett upcoming-dokument för att överstyra. Sätt `points` för
 matchanpassade punkter (3–6 st, `src`: Gilbert / Gallwey / Coach).
 
 **När du läser backhandsmash:** lägg in/uppdatera Christians kommande

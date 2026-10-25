@@ -11,8 +11,9 @@
 // upcoming-dokument: { date, time, kind, opponent?, place?, note?, balls?,
 //   racket?, racket_reason?, points?: [{src, title, detail}], source: 'coach'|'manual' }
 
-import { el, formatDate, daysBetween } from './dom.js';
-import { stringingAt, stringingLabel } from './diary.js';
+import { el, formatDate } from './dom.js';
+import { stringingLabel } from './diary.js';
+import { chooseRacket, stringState, isMatchKind } from './rackets.js';
 
 export const WEEKLY_TRAINING = { weekday: 4, time: '20:00', kind: 'traning' };
 
@@ -23,7 +24,7 @@ export const KINDS = {
   traningssession: { heading: 'Inför nästa träning', label: 'Träningssession' }
 };
 
-const isMatch = (kind) => kind === 'match' || kind === 'traningsmatch';
+const isMatch = isMatchKind;
 
 export const CHECKLIST = ['Powerade', 'Vatten', 'Corny/banan', 'Skor', 'Linser'];
 
@@ -101,40 +102,14 @@ export function nextEvent(upcoming, diary, now = new Date()) {
 
 /* ---------- Rackval ---------- */
 
-function racketStats(diary) {
-  const stats = {};
-  for (const e of Object.values(diary)) {
-    if (!e.racket) continue;
-    const s = stats[e.racket] || (stats[e.racket] = { count: 0, feelSum: 0, feelN: 0, last: '' });
-    s.count++;
-    if (typeof e.feel === 'number') { s.feelSum += e.feel; s.feelN++; }
-    if (e.date > s.last) s.last = e.date;
-  }
-  return stats;
-}
-
-// Match: racketet du spelat mest med (tryggast). Träning: det som vilat längst,
-// så båda strängningarna får speltid och kan jämföras.
+// Coachen kan överstyra med racket + racket_reason på upcoming-dokumentet;
+// annars avgör strängspänningen (js/rackets.js).
 export function recommendRacket(ev, rackets, diary) {
   if (ev.racket && rackets[ev.racket]) {
-    return { id: ev.racket, reason: ev.racket_reason || 'Coachens val inför just den här matchen.' };
+    const st = stringState(ev.racket, rackets[ev.racket], diary, ev.date);
+    return { id: ev.racket, reason: ev.racket_reason || 'Coachens val inför just den här matchen.', state: st };
   }
-  const usable = Object.keys(rackets).filter((id) => rackets[id].status !== 'hos strängaren').sort();
-  if (!usable.length) return null;
-  const stats = racketStats(diary);
-  const st = (id) => stats[id] || { count: 0, feelSum: 0, feelN: 0, last: '' };
-  const avg = (id) => (st(id).feelN ? st(id).feelSum / st(id).feelN : 0);
-
-  if (isMatch(ev.kind)) {
-    const id = [...usable].sort((a, b) => st(b).count - st(a).count || avg(b) - avg(a))[0];
-    return { id, reason: st(id).count
-      ? `Racketet du spelat mest med (${st(id).count} pass) — kör på det du vet fungerar.`
-      : 'Det racket som är i bruk.' };
-  }
-  const id = [...usable].sort((a, b) => st(a).last.localeCompare(st(b).last))[0];
-  return { id, reason: st(id).last
-    ? `Vilat sedan ${formatDate(st(id).last)} — växla så båda strängningarna får speltid.`
-    : 'Inte använt än — dags att prova det.' };
+  return chooseRacket(ev.kind, rackets, diary, ev.date);
 }
 
 /* ---------- Checklista (per enhet, per tillfälle) ---------- */
@@ -158,16 +133,17 @@ function whenLine(ev) {
   return parts.join(' · ');
 }
 
-function racketBox(rec, rackets, date) {
+function racketBox(rec, rackets) {
   if (!rec) return null;
   const r = rackets[rec.id];
-  const s = stringingAt(r, date) || (r.stringings || []).slice(-1)[0];
-  const age = s && s.date ? daysBetween(s.date, date) : null;
+  const st = rec.state;
+  const kg = st && st.stringing ? ` · ≈ ${String(st.kgNow).replace('.', ',')} kg nu` : '';
   return el('div', { class: 'next-racket' },
     el('span', { class: 'entry-label' }, 'Racket'),
     el('p', {}, el('b', {}, `${rec.id.toUpperCase()} · ${r.name}`),
-      s ? ` — ${stringingLabel(s)}${age != null ? ` (${age} d)` : ''}` : ''),
-    el('p', { class: 'why' }, rec.reason));
+      st && st.stringing ? ` — ${stringingLabel(st.stringing)}${kg}` : ''),
+    el('p', { class: 'why' }, rec.reason),
+    rec.warning ? el('p', { class: 'warn' }, `⚠ ${rec.warning}`) : null);
 }
 
 function checklist(ev) {
@@ -227,7 +203,7 @@ export function nextCard({ upcoming, diary, rackets }, { onAdd, onRemove }) {
     el('h3', {}, KINDS[ev.kind].heading),
     el('p', { class: 'desc' }, whenLine(ev)),
     ev.note ? el('p', { class: 'next-note' }, ev.note) : null,
-    racketBox(recommendRacket(ev, rackets, diary), rackets, ev.date),
+    racketBox(recommendRacket(ev, rackets, diary), rackets),
     checklist(ev),
     el('div', { class: 'next-points' },
       el('span', { class: 'entry-label' }, 'Tänk på'),

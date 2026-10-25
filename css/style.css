@@ -23,10 +23,29 @@
 body {
   margin: 0;
   font-family: "Space Grotesk", system-ui, sans-serif;
-  background: var(--bg);
   color: var(--ink);
   -webkit-font-smoothing: antialiased;
+  /* Court Philippe-Chatrier, Roland Garros 2010 — foto Yann Caradec, CC BY-SA 2.0 (se sidfoten). */
+  background:
+    linear-gradient(to bottom, rgba(237, 227, 211, 0) 0, rgba(237, 227, 211, 0) 250px, var(--bg) 420px),
+    url("https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Court_Philippe_Chatrier_-_1er_tour_de_Roland_Garros_2010_-_tennis_french_open.jpg/1920px-Court_Philippe_Chatrier_-_1er_tour_de_Roland_Garros_2010_-_tennis_french_open.jpg")
+      42% top / auto 420px no-repeat,
+    var(--bg);
 }
+
+@media (min-width: 900px) {
+  body { background-size: auto, 100% auto, auto; background-position: 0 0, center 70%, 0 0; }
+}
+
+footer.credit {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 0 16px 28px;
+  font-size: 0.7rem;
+  color: var(--muted);
+  text-align: center;
+}
+footer.credit a { color: inherit; }
 
 #app {
   max-width: 640px;
@@ -43,7 +62,9 @@ h1, section.phase > h2, .trend-card h3 {
 /* ---------- Header: grön "centre court"-panel ---------- */
 
 header.top {
-  background: var(--accent);
+  background: rgba(30, 91, 63, 0.9);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   color: var(--card);
   border-radius: var(--radius);
   padding: 18px 18px 16px;
@@ -577,3 +598,25 @@ form.add-event button {
   color: #fff;
   cursor: pointer;
 }
+
+/* ---------- Racketar: spänning och livslängd ---------- */
+
+.racket-item .tension { font-size: 0.82rem; color: var(--muted); }
+.racket-item .tension .kg { font-weight: 700; color: var(--ink); font-size: 0.95rem; }
+.racket-item .left { font-size: 0.8rem; color: var(--muted); }
+.life-bar {
+  height: 8px;
+  margin: 6px 0 2px;
+  background: var(--line);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.life-bar > div { height: 100%; border-radius: 4px; }
+.life-bar.ok > div { background: var(--accent); }
+.life-bar.mid > div { background: #b8a23a; }
+.life-bar.low > div, .life-bar.dead > div { background: var(--clay); }
+.chip.role { background: var(--accent-soft); color: var(--accent); }
+.chip.role.match { background: var(--clay); color: var(--card); }
+.chip.dead { background: #f6e2de; color: var(--warn); }
+.model-note { margin: 10px 0 0; font-size: 0.72rem; color: var(--muted); line-height: 1.45; }
+.next-racket .warn { font-size: 0.8rem; color: var(--warn); margin-top: 4px; }
