@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" preserveAspectRatio="xMidYMax slice">
+  <!-- Tom grusbana i kvällsljus, sedd bakom baslinjen. Egen illustration för tennisdagboken. -->
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8fb9d8"/>
+      <stop offset="0.6" stop-color="#cfdde6"/>
+      <stop offset="1" stop-color="#f1dcb8"/>
+    </linearGradient>
+    <linearGradient id="clay" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#c2643a"/>
+      <stop offset="1" stop-color="#b4532b"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff3d6" stop-opacity="0.22"/>
+      <stop offset="0.5" stop-color="#fff3d6" stop-opacity="0"/>
+      <stop offset="1" stop-color="#3a1d0e" stop-opacity="0.12"/>
+    </linearGradient>
+    <filter id="grain" x="0" y="0" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9 0.35" numOctaves="2" seed="7"/>
+      <feColorMatrix values="0 0 0 0 0.45  0 0 0 0 0.2  0 0 0 0 0.1  0 0 0 0.28 0"/>
+      <feComposite in2="SourceGraphic" operator="in"/>
+    </filter>
+    <pattern id="mesh" width="6" height="6" patternUnits="userSpaceOnUse">
+      <path d="M0 0L6 6M6 0L0 6" stroke="#1b241f" stroke-width="0.8" opacity="0.7"/>
+    </pattern>
+  </defs>
+
+  <!-- Himmel och träd -->
+  <rect width="1200" height="260" fill="url(#sky)"/>
+  <g fill="#3d5a3f">
+    <path d="M0 215 Q40 150 90 190 Q120 140 170 180 Q210 130 260 175 Q300 145 340 185 Q380 150 430 190 L430 216 L0 216Z"/>
+    <path d="M770 190 Q810 145 860 180 Q900 125 950 170 Q990 140 1030 175 Q1080 130 1130 170 Q1170 150 1200 175 L1200 216 L770 216Z"/>
+  </g>
+  <g fill="#2f4a33">
+    <path d="M380 220 Q420 175 470 205 Q520 165 570 200 Q620 170 660 200 Q710 168 760 205 Q800 185 840 212 L840 216 L380 216Z"/>
+  </g>
+  <!-- Strålkastarstolpar -->
+  <g stroke="#6b7570" stroke-width="3">
+    <line x1="215" y1="120" x2="215" y2="214"/>
+    <line x1="985" y1="120" x2="985" y2="214"/>
+  </g>
+  <g fill="#6b7570">
+    <rect x="200" y="112" width="30" height="10" rx="2"/>
+    <rect x="970" y="112" width="30" height="10" rx="2"/>
+  </g>
+
+  <!-- Vindskydd bakom banan -->
+  <rect x="0" y="212" width="1200" height="32" fill="#1e5b3f"/>
+  <rect x="0" y="212" width="1200" height="3" fill="#2a7351"/>
+
+  <!-- Grus -->
+  <rect x="0" y="242" width="1200" height="358" fill="url(#clay)"/>
+  <rect x="0" y="242" width="1200" height="358" fill="#000" filter="url(#grain)"/>
+  <!-- Släpmattans bågar -->
+  <g fill="none" stroke="#d27a4e" stroke-width="2" opacity="0.35">
+    <path d="M60 600 Q600 380 1140 600"/>
+    <path d="M200 600 Q600 430 1000 600"/>
+    <path d="M330 270 Q600 300 870 270"/>
+  </g>
+  <rect x="0" y="242" width="1200" height="358" fill="url(#glow)"/>
+
+  <!-- Linjer (perspektiv, kamera bakom närmsta baslinjen) -->
+  <g fill="none" stroke="#f7f1e6" stroke-linecap="round" stroke-linejoin="round" opacity="0.95">
+    <!-- dubbelsidlinjer och baslinjer -->
+    <path d="M150 600 L487 256 L713 256 L1050 600" stroke-width="5"/>
+    <line x1="150" y1="598" x2="1050" y2="598" stroke-width="7"/>
+    <line x1="487" y1="256" x2="713" y2="256" stroke-width="2.4"/>
+    <!-- singelsidlinjer -->
+    <line x1="263" y1="600" x2="515" y2="256" stroke-width="4"/>
+    <line x1="937" y1="600" x2="685" y2="256" stroke-width="4"/>
+    <!-- servelinjer -->
+    <line x1="400" y1="413" x2="800" y2="413" stroke-width="3.6"/>
+    <line x1="497" y1="280" x2="703" y2="280" stroke-width="2.4"/>
+    <!-- mittlinje -->
+    <line x1="600" y1="413" x2="600" y2="280" stroke-width="3"/>
+    <!-- mittmarkeringar -->
+    <line x1="600" y1="598" x2="600" y2="582" stroke-width="5"/>
+    <line x1="600" y1="256" x2="600" y2="261" stroke-width="2"/>
+  </g>
+
+  <!-- Nätets skugga -->
+  <path d="M389 327 L811 327 L800 336 L400 336Z" fill="#5a2a14" opacity="0.18"/>
+  <!-- Nät -->
+  <path d="M389 290 Q600 299 811 290 L811 325 L389 325Z" fill="url(#mesh)"/>
+  <path d="M389 290 Q600 299 811 290" fill="none" stroke="#fbf8f2" stroke-width="3.5"/>
+  <line x1="600" y1="296" x2="600" y2="325" stroke="#fbf8f2" stroke-width="1.6"/>
+  <!-- Stolpar -->
+  <g stroke="#2b3530" stroke-width="5" stroke-linecap="round">
+    <line x1="389" y1="288" x2="389" y2="326"/>
+    <line x1="811" y1="288" x2="811" y2="326"/>
+  </g>
+
+  <!-- En boll på grusset -->
+  <circle cx="742" cy="502" r="7" fill="#d4e157"/>
+  <path d="M736 498 Q742 503 748 498" fill="none" stroke="#f7f1e6" stroke-width="1.4"/>
+  <ellipse cx="745" cy="511" rx="8" ry="2.2" fill="#5a2a14" opacity="0.25"/>
+</svg>
