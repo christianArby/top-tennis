@@ -40,8 +40,20 @@ function fromFields(fields) {
   return Object.fromEntries(Object.entries(fields).map(([k, v]) => [k, fromValue(v)]));
 }
 
+// Nätverket tajmar ibland ut (ETIMEDOUT) — försök några gånger innan vi ger upp.
+async function fetchWithRetry(url, init, attempts = 4) {
+  for (let i = 1; ; i++) {
+    try {
+      return await fetch(url, init);
+    } catch (err) {
+      if (i >= attempts) throw new Error(`${err.message} (${err.cause?.code || 'okänt'}) efter ${attempts} försök`);
+      await new Promise((r) => setTimeout(r, 500 * i));
+    }
+  }
+}
+
 async function call(url, init) {
-  const res = await fetch(url, init);
+  const res = await fetchWithRetry(url, init);
   const body = await res.json();
   if (!res.ok) throw new Error(`${res.status}: ${JSON.stringify(body.error || body)}`);
   return body;
