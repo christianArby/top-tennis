@@ -11,6 +11,8 @@ export const TYPES = {
   vuxentennis: { label: 'Vuxentennis', kind: 'tennis' },
   gruppspel: { label: 'Gruppspel', kind: 'match' },
   match: { label: 'Match', kind: 'match' },
+  traningsmatch: { label: 'Träningsmatch', kind: 'match' },
+  traningssession: { label: 'Träningssession', kind: 'tennis' },
   eget: { label: 'Eget spel', kind: 'tennis' },
   fys: { label: 'Fys', kind: 'fys' }
 };

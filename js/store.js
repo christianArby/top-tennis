@@ -4,6 +4,7 @@
 // Kollektioner:
 //   diary       — dagboksposter, id = datum (2026-10-15, 2026-10-15-2 vid flera samma dag)
 //   rackets     — racketar med strängningshistorik, id = a | b
+//   upcoming    — kommande matcher/sessioner, id = 2026-11-08-1700
 //   session_log — Höstplanens loggar (arkiv), id = vecka:slot
 
 export function logKey(week, slot) {
@@ -32,11 +33,19 @@ function createLocalBackend() {
       map[id] = doc;
       localStorage.setItem(lsKey(coll), JSON.stringify(map));
     },
+    async remove(coll, id) {
+      const map = read(coll);
+      delete map[id];
+      localStorage.setItem(lsKey(coll), JSON.stringify(map));
+    },
     subscribe(coll, onDoc) {
       // Håller flikar på samma enhet i sync; händelsen triggar inte i egna fliken.
       window.addEventListener('storage', (e) => {
-        if (e.key !== lsKey(coll) || !e.newValue) return;
-        for (const [id, doc] of Object.entries(JSON.parse(e.newValue))) onDoc(id, doc);
+        if (e.key !== lsKey(coll)) return;
+        const before = JSON.parse(e.oldValue || '{}');
+        const after = JSON.parse(e.newValue || '{}');
+        for (const id of Object.keys(before)) if (!(id in after)) onDoc(id, null);
+        for (const [id, doc] of Object.entries(after)) onDoc(id, doc);
       });
     }
   };
@@ -44,7 +53,7 @@ function createLocalBackend() {
 
 async function createFirestoreBackend(config) {
   const { initializeApp } = await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js');
-  const { getFirestore, collection, doc, setDoc, getDocs, onSnapshot } =
+  const { getFirestore, collection, doc, setDoc, deleteDoc, getDocs, onSnapshot } =
     await import('https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js');
   const db = getFirestore(initializeApp(config));
   return {
@@ -58,10 +67,14 @@ async function createFirestoreBackend(config) {
     async upsert(coll, id, data) {
       await setDoc(doc(collection(db, coll), id), data);
     },
+    async remove(coll, id) {
+      await deleteDoc(doc(collection(db, coll), id));
+    },
+    // onDoc(id, null) = dokumentet togs bort.
     subscribe(coll, onDoc) {
       onSnapshot(collection(db, coll), (snapshot) => {
         for (const change of snapshot.docChanges()) {
-          if (change.type !== 'removed') onDoc(change.doc.id, change.doc.data());
+          onDoc(change.doc.id, change.type === 'removed' ? null : change.doc.data());
         }
       });
     }

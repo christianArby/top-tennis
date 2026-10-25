@@ -25,6 +25,7 @@ ingen bundler, ingen build — bara push och kör.
 
 - `js/app.js` — skal och flikar: Dagbok, Trender, Profil, Arkiv.
 - `js/diary.js` — dagboksposter och racketar med strängningshistorik.
+- `js/next.js` — kortet "Inför nästa träning/match": rackval, packlista, tänk-på-punkter.
 - `js/archive.js` + `js/plan.js` — Höstplanen i läsläge.
 - `js/store.js` — all datalagring per kollektion; Firestore eller localStorage.
 - `js/exercises.js` — övningslexikon (klickbara övningsnamn med popup).

@@ -1,14 +1,15 @@
 import { createStore } from './store.js';
 import { renderDiaryTrends } from './charts.js';
-import { PROFILE, NEXT_MATCH } from './profile.js';
+import { PROFILE } from './profile.js';
+import { nextCard } from './next.js';
 import { el, todayISO, linkifyExercises } from './dom.js';
 import { diaryView, racketsCard, sortedEntries } from './diary.js';
 import { archiveView } from './archive.js';
 
 const app = document.getElementById('app');
 
-const COLLECTIONS = ['diary', 'rackets', 'session_log'];
-const data = { diary: {}, rackets: {}, session_log: {} };
+const COLLECTIONS = ['diary', 'rackets', 'upcoming', 'session_log'];
+const data = { diary: {}, rackets: {}, upcoming: {}, session_log: {} };
 let store;
 let view = 'dagbok';
 
@@ -40,16 +41,6 @@ function trendsView() {
 function profileView() {
   const frag = document.createDocumentFragment();
 
-  if (NEXT_MATCH && NEXT_MATCH.date >= todayISO()) {
-    frag.append(el('div', { class: 'trend-card next-match' },
-      el('h3', {}, NEXT_MATCH.title),
-      el('p', { class: 'desc' }, NEXT_MATCH.when),
-      ...NEXT_MATCH.points.map((pt) => el('div', { class: 'focus-item' },
-        el('b', {}, pt.title, el('span', { class: `src ${pt.src.toLowerCase()}` }, pt.src)),
-        el('p', {}, pt.detail)))
-    ));
-  }
-
   const rackets = racketsCard(data.rackets, todayISO());
   if (rackets) frag.append(rackets);
 
@@ -78,6 +69,20 @@ function profileView() {
   return frag;
 }
 
+/* ---------- Kommande pass ---------- */
+
+async function addUpcoming(id, doc) {
+  data.upcoming[id] = doc;
+  render();
+  try { await store.upsert('upcoming', id, doc); } catch (err) { alert(`Kunde inte spara: ${err.message || err}`); }
+}
+
+async function removeUpcoming(id) {
+  delete data.upcoming[id];
+  render();
+  try { await store.remove('upcoming', id); } catch (err) { alert(`Kunde inte ta bort: ${err.message || err}`); }
+}
+
 /* ---------- Skal ---------- */
 
 const TABS = [
@@ -92,7 +97,12 @@ function currentView() {
     case 'trender': return trendsView();
     case 'profil': return profileView();
     case 'arkiv': return archiveView(data.session_log, render);
-    default: return diaryView(data.diary, data.rackets);
+    default: {
+      const frag = document.createDocumentFragment();
+      frag.append(nextCard(data, { onAdd: addUpcoming, onRemove: removeUpcoming }),
+        diaryView(data.diary, data.rackets));
+      return frag;
+    }
   }
 }
 
@@ -123,7 +133,7 @@ async function init() {
   await Promise.all(COLLECTIONS.map(async (coll) => { data[coll] = await store.load(coll); }));
   for (const coll of COLLECTIONS) {
     store.subscribe(coll, (id, doc) => {
-      data[coll][id] = doc;
+      if (doc) data[coll][id] = doc; else delete data[coll][id];
       render();
     });
   }

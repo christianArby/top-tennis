@@ -42,9 +42,11 @@ Behåll hans egna ord i `did`/`felt` så långt det går — det är hans dagbok
 |---|---|---|
 | `diary` | `2026-10-15` (`-2`, `-3` vid flera pass samma dag) | `date`, `type`, `racket?`, `feel?` (1–5), `did`, `felt?`, `coach_note?` |
 | `rackets` | `a`, `b` | `name`, `status` (`i bruk` / `hos strängaren`), `stringings: [{string, gauge, kg, date}]` äldst först; `date: null` = inte klar än |
+| `upcoming` | `2026-11-08-1700` (datum + tid) | `date`, `time`, `kind`, `opponent?`, `place?`, `note?`, `balls?` (han tar med bollar), `racket?` + `racket_reason?` (överstyr rackvalet), `points?` (egna tänk-på-punkter), `source` (`coach` / `manual`) |
 | `session_log` | `vecka:slot` | Höstplanens arkiv — rör inte |
 
-`type`: `vuxentennis` · `gruppspel` · `match` · `eget` · `fys`
+`type`: `vuxentennis` · `gruppspel` · `match` · `traningsmatch` · `traningssession` · `eget` · `fys`
+(`traningssession` = tennisspel, inte fysträning.)
 
 Läs och skriv med hjälpskriptet (konverterar vanlig JSON ↔ Firestores REST-format,
 ingen nyckel behövs):
@@ -61,6 +63,23 @@ Racketbyte av strängning: `get` racketen, lägg till en ny post sist i
 `stringings` (eller sätt `date` på den väntande), sätt `status`, och `set`.
 
 Webbappen (läsvy): https://christianarby.github.io/top-tennis/
+
+## Kortet "Inför nästa träning/match"
+
+Överst i dagboken visas nästa pass: vuxenträningen varje **torsdag kl 20**
+(genereras automatiskt) eller ett dokument i `upcoming`, det som kommer först.
+`kind`: `match` (gruppspel) · `traningsmatch` → "Inför nästa match";
+`traning` · `traningssession` → "Inför nästa träning". Christian kan själv lägga
+till träningsmatcher/-sessioner via kortet (`source: manual`).
+
+Kortet visar rackval, en packlista (Powerade, vatten, Corny/banan, skor, linser,
++ bollar om `balls: true`) och tänk-på-punkter ur `coach/bocker.md`. Rackvalet är
+automatiskt (match: mest använda racketet; träning: det som vilat längst) —
+sätt `racket` + `racket_reason` för att överstyra. Sätt `points` för
+matchanpassade punkter (3–6 st, `src`: Gilbert / Gallwey / Coach).
+
+**När du läser backhandsmash:** lägg in/uppdatera Christians kommande
+gruppspelsmatcher i `upcoming` (`kind: match`, motståndare, bana, `balls`).
 
 ## Gruppspel
 
@@ -90,9 +109,10 @@ därifrån i stället för att be honom upprepa siffrorna.
 
 ## Rutiner (schemalagda tasks)
 
-- **Matchförberedelse** (lördag 19:00): finns en gruppspelsmatch inom ~36 h —
-  motståndarens siffror från backhandsmash, matchplan på tre punkter, val av
-  racket och praktiskt. Annars tyst.
+- **Matchförberedelse** (lördag 19:00): synkar kommande gruppspelsmatcher till
+  `upcoming`. Finns en match inom ~36 h — motståndarens siffror, matchplan,
+  rackval; skriver in matchanpassade `points` på matchens `upcoming`-dokument.
+  Annars tyst.
 - **Kvällscheck** (dagligen 22:00): finns ingen dagbokspost för idag — fråga
   kort om han spelat, och logga om han svarar. Finns en post som väntar på
   berättelse — påminn om just den. Annars: säg ingenting.
