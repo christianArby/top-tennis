@@ -80,6 +80,10 @@ därifrån i stället för att be honom upprepa siffrorna.
   styrkor/svagheter, matchmönster, hälsa, racketar. Läs den innan råd.
   Kort: forehand och serve är vapen; nätspel, backhand-tvekan och
   kondition/fotarbete är hålen; matcher förloras på taktik, inte på slag.
+- `coach/bocker.md` — det bästa ur hans favoritböcker *Winning Ugly* (Brad
+  Gilbert, taktik) och *The Inner Game of Tennis* (Tim Gallwey, huvudet). Läs
+  den inför matchförberedelser, efter matcher och när nerverna kommer, och
+  koppla idéerna till hans faktiska mönster.
 - `coach/traningsfokus.md` — servteknikens checkpoints (videoanalys: max 2
   korrigeringar, axelavlastning före kraft), axelsäker servevolym, prehab.
 - `js/exercises.js` — övningslexikonet som sajten länkar till.
