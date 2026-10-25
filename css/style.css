@@ -28,6 +28,30 @@ body {
   background: var(--bg);
 }
 
+/* Bakgrundsfoto (grusbana vid sjön), länkat från Sanity-CDN:n — Christians val.
+   Mobil får ett stående utsnitt beskuret på servern. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(to bottom, rgba(237, 227, 211, 0.05) 0%, rgba(237, 227, 211, 0.25) 60%, rgba(237, 227, 211, 0.6) 100%),
+    url("https://cdn.sanity.io/images/vxy259ii/production/96db52de4e61a5c42dc378cc02f5bf608471d3e8-2560x1707.jpg?auto=format&fit=crop&fp-x=0.5&fp-y=0.62&w=900&h=1600&q=70")
+      center / cover no-repeat,
+    var(--bg);
+}
+
+@media (min-width: 700px) {
+  body::before {
+    background:
+      linear-gradient(to bottom, rgba(237, 227, 211, 0.05) 0%, rgba(237, 227, 211, 0.25) 60%, rgba(237, 227, 211, 0.6) 100%),
+      url("https://cdn.sanity.io/images/vxy259ii/production/96db52de4e61a5c42dc378cc02f5bf608471d3e8-2560x1707.jpg?auto=format&w=1920&q=70")
+        center 60% / cover no-repeat,
+      var(--bg);
+  }
+}
+
 
 
 #app {
@@ -45,16 +69,9 @@ h1, section.phase > h2, .trend-card h3 {
 /* ---------- Header: grön "centre court"-panel ---------- */
 
 header.top {
-  /* Egen illustration av en tom grusbana (img/court.svg) med grön ton för läsbarhet. */
-  background:
-    linear-gradient(to bottom, rgba(23, 71, 49, 0) 0%, rgba(23, 71, 49, 0.05) 35%, rgba(23, 71, 49, 0.85) 100%),
-    url("../img/court.svg") center 58% / cover no-repeat,
-    var(--accent);
-  min-height: 190px;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.25);
+  background: rgba(30, 91, 63, 0.88);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
   color: var(--card);
   border-radius: var(--radius);
   padding: 18px 18px 16px;
