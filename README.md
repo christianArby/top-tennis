@@ -30,4 +30,4 @@ ingen bundler, ingen build — bara push och kör.
 - `js/store.js` — all datalagring per kollektion; Firestore eller localStorage.
 - `js/exercises.js` — övningslexikon (klickbara övningsnamn med popup).
 - `coach/fs.mjs` — coachens CLI för att läsa/skriva Firestore med vanlig JSON.
-- `firebase/firestore.rules` — regler för `diary`, `rackets` och `session_log`.
+- `firebase/firestore.rules` — regler för `diary`, `rackets`, `upcoming` och `session_log`.
