@@ -668,3 +668,20 @@ form.add-event button {
 }
 .serve-note { margin: 10px 0 0; font-size: 0.84rem; line-height: 1.5; }
 .serve-foot { margin: 8px 0 0; font-size: 0.78rem; color: var(--accent); font-weight: 500; }
+
+.serve-pros { display: flex; align-items: center; gap: 6px; margin-bottom: 10px; }
+.serve-pros .entry-label { margin-right: 4px; }
+.serve-pro {
+  font: inherit;
+  font-size: 0.8rem;
+  padding: 5px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--card);
+  color: var(--ink);
+  cursor: pointer;
+}
+.serve-pro.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+/* Liggande proffsklipp (16:9) bredvid Christians stående ruta (9:16): 81:256 ger lika höjd. */
+.serve-pair.wide { grid-template-columns: 81fr 256fr; }
+.serve-pair.wide .serve-sinner { aspect-ratio: 16 / 9; }
