@@ -5,6 +5,7 @@ import { nextCard } from './next.js';
 import { el, todayISO, linkifyExercises } from './dom.js';
 import { diaryView, sortedEntries } from './diary.js';
 import { racketsCard } from './rackets.js';
+import { serveCard } from './serve.js';
 import { archiveView } from './archive.js';
 
 const app = document.getElementById('app');
@@ -44,6 +45,8 @@ function profileView() {
 
   const rackets = racketsCard(data.rackets, data.diary);
   if (rackets) frag.append(rackets);
+
+  frag.append(serveCard());
 
   frag.append(el('div', { class: 'trend-card' },
     el('h3', {}, 'Mål'),
